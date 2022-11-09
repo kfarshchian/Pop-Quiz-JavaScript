@@ -1,0 +1,22 @@
+*{
+    margin: 0; 
+    padding: 0;
+    box-sizing: border-box;
+   }
+
+.top{
+    display: block;
+}
+.timer{
+    display: inline;
+    float: right;    
+}
+.top a{
+    display: inline;
+}
+.start{
+    display: block;
+    justify-content: center;
+    text-align: center;
+    padding: 150px;
+}
