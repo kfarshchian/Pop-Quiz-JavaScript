@@ -2,6 +2,7 @@
     margin: 0; 
     padding: 0;
     box-sizing: border-box;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
    }
 
 .top{
@@ -19,4 +20,81 @@
     justify-content: center;
     text-align: center;
     padding: 150px;
+}
+#startQuiz{
+    display: inline-block;
+}
+#container{
+    
+    text-align: center;
+    position: relative;
+    width: 800px;
+    height: auto;
+    max-width: 80%;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px 2px;
+    left: 560px;
+    top: 200px;
+}
+section .container{
+    display: inline-block;
+    justify-content: center;
+}
+.hide{
+    display: none;
+}
+
+/**Button decorations**/
+.btn-grid{
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 5px;
+    margin: 10px;
+    
+}
+.btn{
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: aqua;
+    border: 2px solid white;
+}
+.startQuiz{
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: aqua;
+    border: 2px solid white;
+}
+.next-btn{
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: aqua;
+    border: 2px solid white;
+}
+.submit-btn{
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: aqua;
+    border: 2px solid white;
+}
+.btn:hover{
+    border-color: black;
+}
+.startQuiz:hover{
+    border-color: black;
+}
+.next-btn:hover{
+    border-color: black;
+}
+.submit-btn:hover{
+    border-color: black;
+}
+.btn.correct{
+    background-color: green;
+    color: black;
+}
+.btn.wrong{
+    background-color: red;
+    color: black;
 }
