@@ -1,178 +1,145 @@
-var timerE1 = document.querySelector(".timer");
-var mainEl = document.getElementById("main");
-var startQuizBtn = document.querySelector(".startQuiz");
-var questionContainerElement = document.getElementById("container");
-var shuffledQuestions, currentQuestionIndex
-var questionElement = document.getElementById("question");
-var answerButtonsElement = document.getElementById("answer-buttons");
-
-var secondsLeft = 200;
+var questionsEl = document.querySelector("#questions");
+var timerEl = document.querySelector("#time");
+var choicesEl = document.querySelector("#choices");
+var submitBtn = document.querySelector("#submit");
+var startBtn = document.querySelector("#start");
+var initialsEl = document.querySelector("#initials");
+var feedbackEl = document.querySelector("#feedback");
 
 
+var currentQuestionIndex = 0;
+var time = questions.length * 15;
+var timerId;
 
-function startQuiz(){
+function startQuiz() {
 
-    timer();
+  var startScreenEl = document.getElementById("start-screen");
+  startScreenEl.setAttribute("class", "hide");
 
-    var startDivEl = document.getElementById("startDiv");
-         startDivEl.style.display="none";
-    shuffledQuestions = questions.sort(() => Math.random() - .5);
-    currentQuestionIndex = 0
-    questionContainerElement.classList.remove("hide");
 
-    setNextQuestion()
+  questionsEl.removeAttribute("class");
+
+
+  timerId = setInterval(clockTick, 1000);
+
+
+  timerEl.textContent = time;
+
+  getQuestion();
 }
 
-function timer(event){
-    
-    // Sets interval in variable
-    var timerInterval = setInterval(function() {
-        
-      secondsLeft--;
-      timerE1.textContent = secondsLeft + " Seconds left";
-      if(secondsLeft === 0) {
-        // Stops execution of action at set interval
-        clearInterval(timerInterval);
-        // Calls function to end quiz
-        quizEnd();
-      }
-  
-    }, 1000);
-  }
-  
-  
-  
-function setNextQuestion(){
-    showQuestion(shuffledQuestions[currentQuestionIndex])
+function getQuestion() {
+
+  var currentQuestion = questions[currentQuestionIndex];
+
+  var titleEl = document.getElementById("question-title");
+  titleEl.textContent = currentQuestion.title;
+
+  choicesEl.innerHTML = "";
+
+
+  currentQuestion.choices.forEach(function(choice, i) {
+
+    var choiceNode = document.createElement("button");
+    choiceNode.setAttribute("class", "choice");
+    choiceNode.setAttribute("value", choice);
+
+    choiceNode.textContent = i + 1 + ". " + choice;
+
+
+    choiceNode.onclick = questionClick;
+
+    choicesEl.appendChild(choiceNode);
+  });
 }
 
-function showQuestion(question){
-questionElement.innerText = question.question
-question.answers.forEach(answer => {
-    var button = document.createElement('button')
-    button.innerText = answer.text
-    button.classList.add('btn')
-    if (answer.correct){
-        button.dataset.correct = answer.correct
+function questionClick() {
+
+  if (this.value !== questions[currentQuestionIndex].answer) {
+
+    time -= 15;
+
+    if (time < 0) {
+      time = 0;
     }
-    button.addEventListener('click', selectAnswer)
-    answerButtonsElement.appendChild(button)
-    })
+
+    timerEl.textContent = time;
+    feedbackEl.textContent = "Wrong!";
+    feedbackEl.style.color = "red";
+    feedbackEl.style.fontSize = "400%";
+  } else {
+    feedbackEl.textContent = "Correct!";
+    feedbackEl.style.color = "green";
+    feedbackEl.style.fontSize = "400%";
+  }
+
+  feedbackEl.setAttribute("class", "feedback");
+  setTimeout(function() {
+    feedbackEl.setAttribute("class", "feedback hide");
+  }, 1000);
+
+  currentQuestionIndex++;
+
+  if (currentQuestionIndex === questions.length) {
+    quizEnd();
+  } else {
+    getQuestion();
+  }
 }
 
+function quizEnd() {
 
-function quizEnd(){
+  clearInterval(timerId);
 
+  var endScreenEl = document.getElementById("end-screen");
+  endScreenEl.removeAttribute("class");
+
+  var finalScoreEl = document.getElementById("final-score");
+  finalScoreEl.textContent = time;
+
+  questionsEl.setAttribute("class", "hide");
 }
 
-function highScore(){
+function clockTick() {
 
+  time--;
+  timerEl.textContent = time;
+
+  if (time <= 0) {
+    quizEnd();
+  }
 }
 
-function finalScore(){
+function saveHighscore() {
 
+  var initials = initialsEl.value.trim();
+
+  if (initials !== "") {
+
+    var highscores =
+      JSON.parse(window.localStorage.getItem("highscores")) || [];
+
+    var newScore = {
+      score: time,
+      initials: initials
+    };
+
+    highscores.push(newScore);
+    window.localStorage.setItem("highscores", JSON.stringify(highscores));
+
+    window.location.href = "score.html";
+  }
 }
 
-startQuizBtn.onclick = startQuiz;
+function checkForEnter(event) {
 
-
-
-var questions =[
-{
-    question: 'What is the correct JavaScript syntax to change the content of the HTML element below?',
-    answers: [
-        {Text: '<js>', correct: false},
-        {Text: '<script>', correct: true},
-        {Text: '<scripting>', correct: false},
-        {Text: '<javascript>', correct: false}
-    ]
+  if (event.key === "Enter") {
+    saveHighscore();
+  }
 }
-]
 
-var aquestions = [
-    {
-       question: "Inside which HTML element do we put the JavaScript?",
-        choices: [
-            "<js>",
-            "<scripting>",
-            "<script>",
-            "<javascript>",],
-        answer:"<script>"
-    },
-    {
-        title: "What is the correct JavaScript syntax to change the content of the HTML element below?",
-        choices: [
-            "document.getElement('p').innerHTML = 'Hello World!';",
-            "document.getElementByName('p').innerHTML = 'Hello World!';",
-            "document.getElementById('demo').innerHTML = 'Hello World!';",
-            "#demo.innerHTML = 'Hello World!';"],
-        answer:"document.getElementById('demo').innerHTML = 'Hello World!';"
-    },
-    {
-        title: "Where is the correct place to insert a JavaScript?",
-        choices: [
-            "The <body> section",
-            "The <head> section",
-            "Both the <head> section and the <body> section are correct"],
-        answer:"Both the <head> section and the <body> section are correct"
-    },
-    {
-        title: "What is the correct syntax for referring to an external script called 'xxx.js'?",
-        choices: [
-            "<script href='xxx.js'>",
-            "<script name='xxx.js'>",
-            "<script src='xxx.js'>"],
-        answer: "<script src='xxx.js'>"
-    },
-    {
-        title: "How do you write 'Hello World' in an alert box?",
-        choices: [
-            "alertBox('Hello World');",
-            "msgBox('Hello World');",
-            "alert('Hello World');",
-            "msg('Hello World');"],
-        answer:"alert('Hello World');"
-    },
-    {
-        title: "How do you create a function in JavaScript?",
-        choices: [
-            "function:myFunction()",
-            "function myFunction()",
-            "function = myFunction()"],
-        answer:"function myFunction()"
-    },
-    {
-        title: "How do you call a function named 'myFunction'?",
-        choices: [
-            "call function myFunction()",
-            "call myFunction()",
-            "myFunction()"],
-        answer:"myFunction()"
-    },
-    {
-        title: "How to write an IF statement in JavaScript?",
-        choices: [
-            "if i = 5",
-            "if i = 5 then",
-            "if i == 5 then",
-            "if (i == 5)"],
-        answer:"if (i == 5)"
-    },
-    {
-        title: "How to write an IF statement for executing some code if 'i' is NOT equal to 5?",
-        choices: [
-            "if i <> 5",
-            "if i =! 5 then",
-            "if (i != 5)",
-            "if (i <> 5)"],
-        answer:"if (i != 5)"
-    },
-    {
-        title: "How does a WHILE loop start?",
-        choices: [
-            "while i = 1 to 10",
-            "while (i <= 10)",
-            "while (i <= 10; i++)"],
-        answer:"while (i <= 10)"
-    },
-    ];
+submitBtn.onclick = saveHighscore;
+
+startBtn.onclick = startQuiz;
+
+initialsEl.onkeyup = checkForEnter;

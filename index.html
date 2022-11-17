@@ -9,45 +9,38 @@
     <link rel="stylesheet" type="text/css" href="./assets/style.css" />
   </head>
   <body>
-        <main>
-        <!-- score keeper --><!-- timer -->
-        <section class="top">
-          <a href="highscore.html">View High Scores.</a>
-          <p id="timer" class="timer">Time:</p><div id="main"></div>
-        </section>
-         <!-- start area with button-->
-         <section class="start" id="startDiv">
-          <h1>Welcome to the JavaScript Pop Quiz!</h1>
-          <p>
-            The Quiz will contain 10 questions. You will have 20 seconds to answer each question. Your score will be totaled at the end of the Quiz.<br> Upon completion with the highest score you may add your initial to show you are the highest score overall. 
-          </p>
-          <button class="startQuiz">Start Quiz</button>
-        </section>
-        <!-- question box pop up -->
-        <section  id="container" class="hide">
-        <div id="question-container">
-          <div id="question">Question</div>
-          <div id="answer-buttons" class="btn-grid">
-            <button class="btn">Answer 1</button>
-            <button class="btn">Answer 2</button>
-            <button class="btn">Answer 3</button>
-            <button class="btn">Answer 4</button>
-          </div>
-        </div>
-          <div class="controls">
-            <button id="next-btn" class="next-btn"> Next Question</button>
-          </div>
-        </section>
-        <!-- quiz over final score -->
-        <section id="finalscore" class="hide">
-          <h2>All done!</h2>
-          <p>Your final score is <span id="final-score"></span>.</p>
-          <p>
-           Enter initials: <input type="text" id="initials" max="3" />
-          <button id="submit" class="submit-btn">Submit</button>
+    <div class="scores"><a href="score.html">View Highscores</a></div>
+
+    <div class="timer">Time: <span id="time">0</span></div>
+
+    <div class="wrapper">
+      <div id="start-screen" class="start">
+        <h1>Welcome to the JavaScript <br> Pop Quiz!</h1>
+        <p>
+          The Quiz will contain 10 questions. You will have 15 seconds to answer each question. Your score will be totaled at 
+          the end of the Quiz. If you answer a question wrong 10 seconds will be removed from the timer. Upon completion you can 
+          enter your initials to track your score. Try your best to get the highest score.
         </p>
-        </section>
-    </main>
+        <button id="start">Start Quiz</button>
+      </div>
+
+      <div id="questions" class="hide">
+        <h2 id="question-title"></h2>
+        <div id="choices" class="choices"></div>
+      </div>
+
+      <div id="end-screen" class="hide">
+        <h2>All done!</h2>
+        <p>Your final score is <span id="final-score"></span>.</p>
+        <p>
+          Enter initials: <input type="text" id="initials" max="3" />
+          <button id="submit">Submit</button>
+        </p>
+      </div>
+
+      <div id="feedback" class="feedback hide"></div>
+    </div>
+    <script src="./assets/questions.js"></script>
     <script src="./assets/script.js"></script>
   </body>
 </html>
