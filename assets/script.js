@@ -57,7 +57,7 @@ function questionClick() {
 
   if (this.value !== questions[currentQuestionIndex].answer) {
 
-    time -= 15;
+    time -= 10;
 
     if (time < 0) {
       time = 0;
